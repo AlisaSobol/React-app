@@ -1,6 +1,7 @@
 import './App.css';
 import React, { Component } from 'react';
-import  Fixed  from './components/Fixed'
+import Fixed from './components/Fixed'
+import ErrorBoundry from './components/ErrorBoundry';
 import { CardList } from './components/CardList';
 import { Search }  from './components/Search';
 
@@ -37,7 +38,9 @@ class App extends Component {
           <h1 className='f1 ttu white tracked-mega'>Robofriends</h1>
           <Search searchCheange={this.onSearchChange}/>
         </Fixed>
-        <CardList robots={ filteredRobots } />
+        <ErrorBoundry>
+          <CardList robots={ filteredRobots } />
+        </ErrorBoundry>
       </div>
     ); 
   }
