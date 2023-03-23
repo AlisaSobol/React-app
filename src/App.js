@@ -1,78 +1,49 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react';
+import Fixed from './components/Fixed'
+import ErrorBoundry from './components/ErrorBoundry';
+import { CardList } from './components/CardList';
+import { Search }  from './components/Search';
 
-// class App extends Component {
-//   render() {
-//     return (
-//       <div className="App">
-//         <header className="App-header">
-//           <img src={logo} className="App-logo" alt="logo" />
-//           <p>
-//             Edit <code>src/App.js</code> and save to reload.
-//           </p>
-//           <a
-//             className="App-link"
-//             href="https://reactjs.org"
-//             target="_blank"
-//             rel="noopener noreferrer"
-//           >
-//             Learn React
-//           </a>
-//         </header>
-//       </div>
-//     );
-//   }
-// }
 
-// export default App;
+class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      robots: [],
+      searchField: '',
+    }
+  }
 
-const App = (props) => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  ); 
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(users => {
+        this.setState({robots:users})
+      }) 
+  }
+
+  onSearchChange = event => {
+    this.setState({searchField: event.target.value})
+  }
+
+  render () {
+    const filteredRobots = this.state.robots.filter(robot => {
+      return robot.name.toLowerCase().includes(this.state.searchField.toLowerCase())
+    })
+
+    return (
+      <div className="App code bg-dark-green pa5" style={{marginTop: '120px'}}>
+        <Fixed>
+          <h1 className='f1 ttu white tracked-mega'>Robofriends</h1>
+          <Search searchCheange={this.onSearchChange}/>
+        </Fixed>
+        <ErrorBoundry>
+          <CardList robots={ filteredRobots } />
+        </ErrorBoundry>
+      </div>
+    ); 
+  }
 }
 
 export default App;
-
-
-// import logo from './logo.svg';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
